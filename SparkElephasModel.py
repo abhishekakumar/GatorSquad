@@ -85,7 +85,8 @@ def predictMain(modelName):
 def main():
    count=0
    for i in os.listdir(os.environ["MODEL_CSV_FILEPATH"]):
-       if count == 0:
+       # Loop to restrict training to 20 models (only for better analysis purpose)
+       if count < 20:
           modelName = os.path.splitext(i)[0]
           print modelName
           predictMain(modelName)
