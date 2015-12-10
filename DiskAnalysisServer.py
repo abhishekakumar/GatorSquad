@@ -18,19 +18,16 @@ class DiskPredictionServer:
        self.model.compile(loss="binary_crossentropy", optimizer='adam',class_mode="binary")
        
     def getPrediction(self,value):
-        print "Inside the server"
         inputData=pickle.loads(value.data)
         modelName=inputData['model']
         yearPrediction=inputData['year']
         monthPrediction=inputData['month']
         dayPrediction=inputData['day']
         val,testVal=self.getInputVector(yearPrediction,monthPrediction,dayPrediction,modelName)
-        print "INput Vector:",val
         self.model.load_weights("/home/vyassu/GatorSquad/Weights/"+str(yearPrediction)+"/"+
                     str(monthPrediction)+"/"+str(modelName)+"_my_model_weights.h5")
         predicted = self.model.predict_classes(val)
         #score, acc = self.model.evaluate(val, testVal,show_accuracy=True)
-        print(" THE VALUE Predicted:",predicted[0][0])
         return Binary(pickle.dumps({'predicted':predicted[0][0]}))    #,'score':score,'accuracy':acc}))
 
     def getInputVector(self,year,month,day,model):
