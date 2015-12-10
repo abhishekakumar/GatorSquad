@@ -10,22 +10,27 @@ from PIL import ImageTk,Image
 import base64
 
 
-diskUIRoot= tk.Tk()
-diskUIRoot.title("Disk Failure Prediction")
+diskUIRoot= tk.Tk()                                                         # Initialize the Roothandler of the UI
+diskUIRoot.title("Disk Failure Prediction")                                 # setting the Window Title
+
+# Setting the Background Image for the UI
 bkImage =Image.open('/home/user/Desktop/Cloud/Image/Many-Computer-Servers-Wallpaper.gif')
-bkImage1 =Image.open('/home/user/Desktop/Cloud/Image/University_of_Florida_logo.jpg')
 bkImage2 =Image.open('/home/user/Desktop/Cloud/Image/images.png')
 bkgdImage = ImageTk.PhotoImage(bkImage)
-imageWidth = bkgdImage.width()
-imageHeight = bkgdImage.height()
+
+# Setting the Initial shape of the UI
 diskUIRoot.geometry('%dx%d+0+0' % (1000,500))
 
+# Creating Label to store the Background Image
 imageLabel = Label(diskUIRoot,image=bkgdImage)
 imageLabel.place(x=0, y=0, relwidth=1, relheight=1)
 imageLabel.pack(fill=BOTH, expand=YES,side=TOP)
+
+# Invoking the remote server and saving it in the client variable
 #diskServer=xmlrpclib.ServerProxy("http://8.35.197.79:12000",allow_none=True)
 diskServer=xmlrpclib.ServerProxy("http://localhost:12000",allow_none=True)
 
+# Frame creation for Model Dropdown box
 modelOptionFrame = Frame(diskUIRoot)
 modelOptionLabel = Label(modelOptionFrame,height=2)
 modelOptionLabel["text"] = "Model Name"
@@ -43,6 +48,7 @@ def getModelNames():
         modelList.append(modelName)
     return tuple(modelList)
 
+# Method to display the result in a new Window
 def resultWindow(result,modelName):
     print "Inside the sub window"
     subWindowFrame = tk.Toplevel()
@@ -53,6 +59,7 @@ def resultWindow(result,modelName):
 	subWindow = tk.Label(subWindowFrame, text="The Disk "+modelName+" Failed on this Date!!")
     subWindow.pack(side=LEFT, fill="both", expand=True, padx=50, pady=25)
 
+# Method to display response in the event of a failure
 def errorWindow(test="No error"):
     print "Inside the error window"
     errorWindowFrame = tk.Toplevel()
@@ -60,6 +67,7 @@ def errorWindow(test="No error"):
     errorWindow = tk.Label(errorWindowFrame, text=test)
     errorWindow.pack(side=LEFT, fill="both", expand=True, padx=50, pady=25)
 
+# method to invoke the remote server to get the prediction data for the given disk for the given date
 def runAnalysis():
     try:
         result = {}
@@ -92,17 +100,19 @@ def runAnalysis():
     except Exception as err:
          errorWindow("Unknown Error:"+str(err))
 
-
+# Creating Calender to enter the date for which the prediction has to be done
 cal = ttkcalendar.Calendar(diskUIRoot)
+
+# Initializing the Widget for the dropdown
 var = StringVar(modelOptionFrame)
 optionTuple=getModelNames()
 optionMenuWidget = apply(OptionMenu, (modelOptionFrame, var) + optionTuple)
 optionMenuWidget.pack(side=TOP)
 
-
 cal.pack()
 modelOptionFrame.pack()
 
+# Creating the Start button to initiate prediction
 startButton= tk.Button(diskUIRoot,text="Start",command=runAnalysis)
 startButton.pack()
 diskUIRoot.mainloop()

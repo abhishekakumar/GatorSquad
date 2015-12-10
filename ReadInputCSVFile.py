@@ -10,7 +10,8 @@ def generate_DataFrame(path,SMARTParams):
     #List of DataFrames sorted by Model number
     dict_input_data_frame={}
 
-    SMARTParams.append(['model','serial_number','failure'])
+    SMARTParams=SMARTParams+['model','serial_number','failure']
+    print SMARTParams
     # Loop to traverse through the Filesystem path to get the csv files
     for f in gb.glob(path):      #"/home/user/Desktop/Cloud/2013*.csv"
         # Temp dataframe to store values read from each csv file 
@@ -22,16 +23,14 @@ def generate_DataFrame(path,SMARTParams):
     groupedDataFrame = input_data_frame.groupby(['model'])
 
     # Appending Failure columns to the list of SMART parameters
-    SMARTParams.pop('model')
-    SMARTParams.pop('serial_number')
+    SMARTParams.remove('model')
+    SMARTParams.remove('serial_number')
 
     # Loop to traverse through the Dataframes and storing each subDataframe as a list
     for name,group in groupedDataFrame:
         dict_input_data_frame.update({name:group})
         filename=os.environ.get('MODEL_CSV_FILEPATH')+str(name).replace(' ','_')+'.csv'
-        temp_group = pd.DataFrame(data=group,columns= SMARTParams)  #['smart_1_raw','smart_3_raw','smart_4_raw','smart_5_raw','smart_7_raw','smart_9_raw','smart_10_raw','smart_12_raw',
- #'smart_184_raw','smart_187_raw','smart_188_raw','smart_189_raw','smart_190_raw','smart_197_raw','smart_198_raw',
-#'smart_199_raw','smart_240_raw','smart_241_raw','smart_242_raw','failure'])
+        temp_group = pd.DataFrame(data=group,columns= SMARTParams)
         temp_group.to_csv(filename)
 
 
