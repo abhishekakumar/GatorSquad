@@ -19,12 +19,8 @@ def getSMARTParameters():
     return SMARTParameterList
 
 # Application Main function
-def predictMain(modelName):
+def predictMain(modelName,sc):
     timeSteps= 30                                                                   # No of past values that has to be used for Training purpose
-    #Initializing Spark Configuration for the Master Node
-    config = SparkConf().setAppName('DiskDetection_App')
-    config.setMaster('local[6]')                                                    #indicates the number of threads on the master node
-    sc = SparkContext(conf=config)                                                  # Initializing the Spark Context
     print "Going to Initialize the LSTM model"
     SMARTparameters=getSMARTParameters()
     print("The following are the SMART parameters:",SMARTparameters)
@@ -84,12 +80,16 @@ def predictMain(modelName):
 
 def main():
    count=0
+   #Initializing Spark Configuration for the Master Node
+   config = SparkConf().setAppName('DiskDetection_App')
+   config.setMaster('local[6]')                                                    #indicates the number of threads on the master node
+   sc = SparkContext(conf=config)                                                  # Initializing the Spark Context
    for i in os.listdir(os.environ["MODEL_CSV_FILEPATH"]):
        # Loop to restrict training to 20 models (only for better analysis purpose)
        if count < 20:
           modelName = os.path.splitext(i)[0]
           print modelName
-          predictMain(modelName)
+          predictMain(modelName,sc)
           count+=1
 if __name__ == '__main__':
    main()
