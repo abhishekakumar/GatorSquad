@@ -1,2 +1,2 @@
-# gatorsquad
-Repository for Vital Signs Analysis Project
+# GatorSquad
+Repository for Disk Drive Prediction Using RNN/LSTM
