@@ -63,12 +63,13 @@ def predictMain(modelName,sc):
     #Initial training run of the model
     spark_model.train(rddataset, nb_epoch=10, batch_size=200, verbose=1, validation_split=0)
     # Saving the model
-    score, acc = spark_model.evaluate(feature_test, label_test,show_accuracy=True)
-    while(acc <= 0.6):
+    score = spark_model.evaluate(feature_test, label_test,show_accuracy=True)
+
+    while(score <= 0.5):
         # Training the Input Data set
         spark_model.train(rddataset, nb_epoch=10, batch_size=200, verbose=1, validation_split=0)
         print "LSTM model training done !!"
-        score, acc = spark_model.evaluate(feature_test, label_test,show_accuracy=True)
+        score = spark_model.evaluate(feature_test, label_test,show_accuracy=True)
     print "Saving weights!!"
     outFilePath=os.environ.get('GATOR_SQUAD_HOME')
     outFilePath=outFilePath+"Weights/"+str(year)+"/"+str(month)+"/"+str(modelName)+"_my_model_weights.h5"
