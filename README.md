@@ -1,3 +1,4 @@
-# GatorSquad
-Repository for Disk Drive Prediction Using RNN/LSTM
-Course Project for cloud and big data analysis
+# Disk Drive Failure Prediction Using RNN/LSTM
+Disk drives are the back bone of large scale systems employing durable storage mechanisms for storage purpose. Disk drives provide a cost effective and reliable mechanism for data storage and are currently the primary storage devices. But even with the reliability of disk drives, disk failures do happen. Failure of disk drives is a rare event with an annual failure rate of 0.3 - 3% per year. Failure of these drive although rare are costly. It would cause large amounts of data loss. Data loss can disrupt businesses, prohibiting them from providing a product or service to their customers and damage reputations. Loss of financial data can lead to financial losses. Such a loss is further disastrous as the cost is greater than the cost of hardware required to replace the drive entirely. Disk failure prediction is a binary classification problem with labeling disks with one of two classes of failure or healthy with one class being very rare. In recent times deep learning methods based on Recurrent Neural Networks (RNN) have shown great classification results for complex problems. A class of RNN – Long Short Term Memory (LSTM) is ideally suited for time based classification and prediction.
+
+## Architecture
